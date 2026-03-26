@@ -16,15 +16,15 @@ jobs:
       with:
         node-version: lts/*
     
-    # Install root dependencies
-    - name: Install dependencies
-      run: npm ci
+    # # Install root dependencies
+    # - name: Install dependencies
+    #   run: npm ci
     
     # Install app deps
     - name: Install app dependencies
       run: |
         cd pw-practice-app
-        npm ci
+        npm install --force
 
     # Start app in background
     - name: Start app
