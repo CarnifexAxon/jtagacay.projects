@@ -16,12 +16,13 @@ jobs:
       with:
         node-version: '25'
         cache: 'npm'
-    # # Install root dependencies
-    # - name: Install dependencies
-    #   run: npm ci
+        cache-dependency-path: |
+          pw-practice-app/package-lock.json
+          playwright/package-lock.json
     
     # Install app deps
     - name: Install app dependencies
+      id: playwright-version
       run: |
         cd pw-practice-app
         npm ci
@@ -40,7 +41,7 @@ jobs:
     - name: Install Playwright Browsers
       run: |
         cd playwright
-        npx playwright install --with-deps
+        npx playwright install --with-deps chromium
     
     # Run the test
     - name: Run Playwright tests
