@@ -24,7 +24,7 @@ jobs:
     - name: Install app dependencies
       run: |
         cd pw-practice-app
-        npm install --force
+        npm ci
 
     # Start app in background
     - name: Start app
