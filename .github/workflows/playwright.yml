@@ -15,12 +15,19 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: '25'
-        cache: 'npm'
-        cache-dependency-path: |
-          pw-practice-app/package-lock.json
-          playwright/package-lock.json
-    
+        node-version: 'lts/*'
+    # Install Cache Modules
+    - name: Cache Node Modules
+      id: cache-npm
+      uses: actions/cache@v4
+      with:
+        path: |
+          pw-practice-app/node_modules
+          playwright/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('pw-practice-app/package-lock.json', 'playwright/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     # Install app deps
     - name: Install app dependencies
       id: playwright-version
@@ -40,15 +47,11 @@ jobs:
     
     # Install the browsers
     - name: Install Playwright Browsers
-      run: |
-        cd playwright
-        npx playwright install --with-deps chromium
+      run: cd playwright && npx playwright install --with-deps chromium
     
     # Run the test
     - name: Run Playwright tests
-      run: |
-        cd playwright
-        npx playwright test --project=chromium
+      run: cd playwright && npx playwright test --project=chromium
 
     # Upload report
     - uses: actions/upload-artifact@v4
